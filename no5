@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+int main(void)
+{
+    int a = 0;
+    int count_positive = 0;
+    int count_negative = 0;
+
+    do
+    {
+        printf("Enter number: ");
+
+        if (scanf("%d", &a) != 1)
+        {
+            printf("Invalid input\n");
+            return 1;
+        }
+
+        if (a == 0)
+        {
+            break;   // STOP — do not count
+        }
+
+        if (a > 0)
+        {
+            count_positive++;
+        }
+        else
+        {
+            count_negative++;
+        }
+
+    } while (1);
+
+    printf("Positive numbers: %d\n", count_positive);
+    printf("Negative numbers: %d\n", count_negative);
+
+    return 0;
+}
