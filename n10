@@ -1,0 +1,97 @@
+#include <stdio.h>
+
+// Reuse from Mission 9: Temperature status function
+int getTemperatureStatus(int temp) {
+    if (temp > 50) {
+        return 2;   // Overheat
+    } else if (temp >= 20 && temp <= 50) {
+        return 1;   // Normal
+    } else {
+        return 0;   // Low Temp
+    }
+}
+
+// Display status based on return value
+void displayStatus(int status) {
+    if (status == 2)
+        printf("OVERHEAT\n");
+    else if (status == 1)
+        printf("NORMAL\n");
+    else
+        printf("LOW TEMP\n");
+}
+
+//Check Temperature Menu
+void checkTemperatureMenu(void) {
+    int temp;
+    printf("Enter temperature: ");
+    if (scanf("%d", &temp) != 1) {
+        printf("Invalid input!\n");
+        // clear invalid input from buffer
+        while(getchar() != '\n');
+        return;
+    }
+    int status = getTemperatureStatus(temp);
+    displayStatus(status);
+}
+
+//Set Fan Speed
+void setFanSpeed(void) {
+    int speed;
+    printf("Enter fan speed (0–5): ");
+    if (scanf("%d", &speed) != 1) {
+        printf("Invalid input!\n");
+        while(getchar() != '\n');
+        return;
+    }
+    if (speed < 0 || speed > 5) {
+        printf("Error: Fan speed must be between 0 and 5.\n");
+    } else {
+        printf("Fan speed set to %d\n", speed);
+    }
+}
+
+//System Status
+void systemStatus(void) {
+    printf("System Running\n");
+    printf("Temperature Sensor OK\n");
+    printf("Fan Status OK\n");
+}
+
+//Get Menu Choice
+int getMenuChoice(void) {
+    int choice;
+    printf("\n===== DEVICE MENU =====\n");
+    printf("1. Check Temperature\n");
+    printf("2. Set Fan Speed\n");
+    printf("3. System Status\n");
+    printf("4. Exit\n");
+    printf("Enter choice: ");
+
+    if (scanf("%d", &choice) != 1) {
+        printf("Invalid input!\n");
+        while(getchar() != '\n'); // clear buffer
+        return 0; // invalid choice
+    }
+    return choice;
+}
+
+//Control Flow
+int main(void) {
+    int choice;
+
+    while (1) {
+        choice = getMenuChoice();
+
+        switch (choice) {
+            case 1: checkTemperatureMenu(); break;
+            case 2: setFanSpeed(); break;
+            case 3: systemStatus(); break;
+            case 4: 
+                printf("Exiting program...\n");
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
