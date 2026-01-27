@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+void checkTemperature(int temp)
+{
+    if (temp > 50)
+    {
+        printf("OVERHEAT\n");
+    }
+    else if (temp >= 20 && temp <= 50)
+    {
+        printf("NORMAL\n");
+    }
+    else
+    {
+        printf("LOW TEMP\n");
+    }
+}
+
+int main(void)
+{
+    int temp = 0;
+
+    while (1)
+    {
+        printf("Enter temperature (-100 to stop): ");
+
+        if (scanf("%d", &temp) != 1)
+        {
+            printf("Invalid input\n");
+            return 1;
+        }
+
+        if (temp == -100)
+        {
+            printf("System Stopped\n");
+            break;
+        }
+
+        checkTemperature(temp);
+    }
+
+    return 0;
+}
