@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+int main(void)
+{
+    int a = 0;
+
+    do
+    {
+        printf("Enter temp: ");
+
+        if (scanf("%d", &a) != 1)
+        {
+            printf("Invalid input\n");
+            return 1;
+        }
+
+        if (a == -100)
+        {
+            break;
+        }
+
+        if (a > 50)
+        {
+            printf("OVERHEAT\n");
+        }
+        else if (a >= 20 && a <= 50)
+        {
+            printf("NORMAL\n");
+        }
+        else
+        {
+            printf("LOW TEMP\n");
+        }
+
+    } while (1);
+
+    printf("System Stopped\n");
+    return 0;
+}
