@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+//Input Layer: Read temperature
+int readTemperature(void) {
+    int temp;
+    printf("Enter temperature (-100 to stop): ");
+    if (scanf("%d", &temp) != 1) {
+        // Input validation failed
+        printf("Invalid input!\n");
+        return -999;   // special value for invalid input
+    }
+    return temp;
+}
+
+// Processing Layer: Process temperature
+int getTemperatureStatus(int temp) {
+    if (temp > 50) {
+        return 2;   // Overheat
+    } else if (temp >= 20 && temp <= 50) {
+        return 1;   // Normal
+    } else {
+        return 0;   // Low Temp
+    }
+}
+
+//Output Layer: Display status
+void displayStatus(int status) {
+    if (status == 2)
+        printf("OVERHEAT\n");
+    else if (status == 1)
+        printf("NORMAL\n");
+    else
+        printf("LOW TEMP\n");
+}
+
+//Control Flow: main()
+int main(void) {
+    int temp, status;
+
+    while (1) {
+        temp = readTemperature();
+
+        if (temp == -100) break;        // stop condition
+        if (temp == -999) continue;     // invalid input, skip
+
+        status = getTemperatureStatus(temp);
+        displayStatus(status);
+    }
+
+    return 0;
+}
