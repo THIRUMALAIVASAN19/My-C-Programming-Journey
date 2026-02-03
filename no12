@@ -1,0 +1,159 @@
+#include <stdio.h>
+
+
+int g_temp=0;
+int g_speed=0;
+int g_status=0;
+typedef enum{
+	STATE_IDLE,
+	STATE_RUNNING,
+	STATE_OVERHEAT,
+	STATE_SHUTDOWN,
+
+}system_state;
+
+system_state g_system_state=STATE_IDLE;
+
+void update_system_state(int temp){
+	if(temp >60){
+		g_system_state=STATE_OVERHEAT;
+	}
+	else if(temp >= 25 && temp <= 60)
+	{
+		g_system_state=STATE_RUNNING;
+	}
+	else{
+		g_system_state=STATE_IDLE;
+	}
+}
+
+void handle_system_state(void){
+	switch(g_system_state){
+		case STATE_IDLE:
+			g_speed=0;
+			printf("STATE_IDLE --> fan is off\n");
+			break;
+		case STATE_RUNNING:
+			g_speed=2;
+			printf("STATE_RUNNING --> fan is medium\n");
+			break;
+		case STATE_OVERHEAT:
+			g_speed=5;
+			printf("STATE_OVERHEAT --> fan is high\n");
+			break;
+		case STATE_SHUTDOWN:
+			g_speed=0;
+			printf(" STATE_SHUTDOWN--> fan is off\n");
+			break;
+	}
+}
+
+int getTemperatureStatus(int temp) 
+{
+  	if (temp > 50) 
+	{ 
+  		return 2; // Overheat 
+  	} 
+    else if (temp >= 20 && temp <= 50) 
+   { 
+  		return 1; // Normal 
+  	} 
+ 	 else 
+  	{
+  	 	return 0; // Low Temp 
+  	} 
+  	
+}
+// Display status based on return value 
+void displayStatus(void) 
+{
+	if (g_status == 2) 
+		printf("OVERHEAT\n"); 
+	else if (g_status == 1) 
+	 	printf("NORMAL\n"); 
+	else 
+	 	printf("LOW TEMP\n"); 
+} 
+void checktempurature(void){
+	printf(" enter the temparture:");
+	if(scanf("%d",&g_temp)!=1){
+		printf("invalid\n");
+		return;
+	}
+	g_status = getTemperatureStatus(g_temp);
+	displayStatus(); 
+	update_system_state(g_temp);
+	handle_system_state();
+	
+	
+}
+void systemstate(void){
+	printf("\n===== SYSTEM STATUS =====\n");
+    printf("Temperature : %d\n", g_temp);
+    printf("Fan Speed   : %d\n", g_speed);
+    
+    printf("System State : ");
+    switch(g_system_state){
+    	case STATE_IDLE:
+    		printf("idle\n");
+    		break;
+    	case STATE_RUNNING:
+    		printf("running\n");
+    		break;
+    	case STATE_OVERHEAT:
+    		printf("Overheat\n");
+    		break;
+    	case STATE_SHUTDOWN:
+    		printf("shut down\n");
+    		break;
+	}
+
+}
+
+void FanSpeed(void){
+    printf("Fan speed is: %d\n", g_speed);
+}
+
+void SHUTDOWN(void){
+		g_system_state = STATE_SHUTDOWN;
+		handle_system_state();
+		printf("Exiting program to STATE_SHUTDOWN...\n");
+}
+int getMenuChoice(void)
+{
+	int choice; 
+	printf("\n===== DEVICE MENU =====\n"); 
+	printf("1. Check Temperature\n"); 
+	printf("2. show Fan Speed\n"); 
+	printf("3. System Status\n"); 
+	printf("4. Exit\n"); 
+	printf("Enter choice: "); 
+	if (scanf("%d", &choice) != 1) 
+	{
+		printf("Invalid input!\n"); 
+		while(getchar() != '\n'); // clear buffer 
+		return 0; // invalid choice
+	}
+	return choice;
+} 
+int main(void)
+{
+	int choice; 
+	while (1)
+	{
+		choice = getMenuChoice();
+		switch (choice) {
+		case 1: checktempurature(); 
+				break; 
+		case 2: FanSpeed();
+				break; 
+		case 3: systemstate(); 
+				break; 
+		case 4: 
+				SHUTDOWN();
+				return 0; 
+		default: 
+				printf("Invalid choice\n"); 
+		} 
+	} 
+}
